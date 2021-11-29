@@ -16,7 +16,7 @@ public class SimpleClient extends AbstractTextRequest<String> {
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        TextRequest<String> textRequest = new SimpleClient(null, SimpleServer.PORT);
+        TextRequest<String> textRequest = new SimpleClient(null, Server.DEFAULT_PORT);
         log.info(textRequest.call());
     }
 

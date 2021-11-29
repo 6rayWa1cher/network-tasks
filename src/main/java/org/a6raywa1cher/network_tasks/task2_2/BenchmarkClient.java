@@ -36,7 +36,7 @@ public class BenchmarkClient {
                         log.error("IO error", e);
                         break;
                     }
-                    if (j % 1000 == 0 && j != 0) log.info("{} called for {} time", finalI, j);
+//                    if (j % 1000 == 0 && j != 0) log.info("{} called for {} time", finalI, j);
                 }
                 latch.countDown();
             });

@@ -1,9 +1,11 @@
 import org.a6raywa1cher.network_tasks.task1.TextRequest;
-import org.a6raywa1cher.network_tasks.task2.AbstractServer;
+import org.a6raywa1cher.network_tasks.task2.AbstractBlockingServer;
+import org.a6raywa1cher.network_tasks.task2.Server;
 import org.a6raywa1cher.network_tasks.task2.SimpleClient;
-import org.a6raywa1cher.network_tasks.task2.SimpleServer;
+import org.a6raywa1cher.network_tasks.task2.SimpleBlockingServer;
 import org.a6raywa1cher.network_tasks.task2_2.MTServer;
 import org.a6raywa1cher.network_tasks.task2_3.FJPServer;
+import org.a6raywa1cher.network_tasks.task3.NIOServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,16 +14,18 @@ import java.io.IOException;
 public class TestServers {
     int port = 25566;
 
-    private void testServer(AbstractServer abstractServer) throws InterruptedException {
-        Thread server = new Thread(() -> {
+    private void testServer(Server server) throws InterruptedException {
+        Thread serverThread = new Thread(() -> {
             try {
-                abstractServer.listen(true);
+                server.listen(true);
             } catch (IOException e) {
                 Assertions.fail(e);
             }
         });
-        server.start();
-        Thread client = new Thread(() -> {
+        serverThread.start();
+        Thread.sleep(100);
+        String[] actualAnswer = new String[1];
+        Thread clientThread = new Thread(() -> {
             TextRequest<String> textRequest = new SimpleClient(null, port) {
                 @Override
                 protected String constructRequest() {
@@ -29,20 +33,20 @@ public class TestServers {
                 }
             };
             try {
-                String output = textRequest.call();
-                Assertions.assertEquals("Hello cat!\n", output);
+                actualAnswer[0] = textRequest.call();
             } catch (IOException e) {
                 Assertions.fail(e);
             }
         });
-        client.start();
-        client.join();
-        server.join();
+        clientThread.start();
+        clientThread.join();
+        serverThread.join();
+        Assertions.assertEquals("Hello cat!\n", actualAnswer[0]);
     }
 
     @Test
     void testSimpleServer() throws InterruptedException {
-        testServer(new SimpleServer(port));
+        testServer(new SimpleBlockingServer(port));
     }
 
     @Test
@@ -53,5 +57,10 @@ public class TestServers {
     @Test
     void testFJPServer() throws InterruptedException {
         testServer(new FJPServer(port));
+    }
+
+    @Test
+    void testNIOServer() throws InterruptedException {
+        testServer(new NIOServer(port));
     }
 }

@@ -13,9 +13,13 @@ import java.net.Socket;
 import java.net.URL;
 
 public abstract class AbstractTextRequest<T> implements TextRequest<T> {
-    private static final Logger logger = LoggerFactory.getLogger(Client.class);
+    private static final Logger log = LoggerFactory.getLogger(Client.class);
     protected String hostname;
     protected int port;
+
+    public AbstractTextRequest() {
+
+    }
 
     public AbstractTextRequest(String hostname, int port) {
         this.hostname = hostname;
@@ -34,13 +38,13 @@ public abstract class AbstractTextRequest<T> implements TextRequest<T> {
 
     public T call() throws IOException {
 
-        logger.debug("Connecting to {}:{}", hostname, port);
+        log.debug("Connecting to {}:{}", hostname, port);
 
         try (Socket socket = new Socket(hostname, port);
              PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
-            logger.debug("Connected to {}:{}", hostname, port);
+            log.debug("Connected to {}:{}", hostname, port);
 
             String request = constructRequest();
 
@@ -49,7 +53,9 @@ public abstract class AbstractTextRequest<T> implements TextRequest<T> {
 
                 printWriter.flush();
 
-                logger.debug("Sent, awaiting an answer");
+//                printWriter.close();
+
+                log.debug("Sent, awaiting an answer");
             }
 
             String convertedInput = receiveAnswer(reader);
@@ -65,14 +71,14 @@ public abstract class AbstractTextRequest<T> implements TextRequest<T> {
 
         while ((line = reader.readLine()) != null) {
             input.append(line).append('\n');
-            logger.trace(line);
+            log.trace(line);
             if (first) {
                 first = false;
-                logger.debug("Received a first line");
+                log.debug("Received a first line");
             }
         }
 
-        logger.debug("Received an answer");
+        log.debug("Received an answer");
 
         return input.toString();
     }

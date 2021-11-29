@@ -3,15 +3,13 @@ package org.a6raywa1cher.network_tasks.task2;
 import java.io.IOException;
 import java.net.Socket;
 
-public class SimpleServer extends AbstractServer {
-    public static final int PORT = 25565;
-
-    public SimpleServer(int port) {
+public class SimpleBlockingServer extends AbstractBlockingServer {
+    public SimpleBlockingServer(int port) {
         super(port);
     }
 
     public static void main(String[] args) throws IOException {
-        SimpleServer simpleServer = new SimpleServer(PORT);
+        SimpleBlockingServer simpleServer = new SimpleBlockingServer(Server.DEFAULT_PORT);
         simpleServer.listen();
     }
 

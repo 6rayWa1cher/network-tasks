@@ -1,21 +1,20 @@
 package org.a6raywa1cher.network_tasks.task2_2;
 
 import lombok.extern.slf4j.Slf4j;
-import org.a6raywa1cher.network_tasks.task2.AbstractServer;
+import org.a6raywa1cher.network_tasks.task2.AbstractBlockingServer;
+import org.a6raywa1cher.network_tasks.task2.Server;
 
 import java.io.IOException;
 import java.net.Socket;
 
 @Slf4j
-public class MTServer extends AbstractServer {
-    public static final int PORT = 25565;
-
+public class MTServer extends AbstractBlockingServer {
     public MTServer(int port) {
         super(port);
     }
 
     public static void main(String[] args) throws IOException {
-        MTServer simpleServer = new MTServer(PORT);
+        MTServer simpleServer = new MTServer(Server.DEFAULT_PORT);
         simpleServer.listen();
     }
 

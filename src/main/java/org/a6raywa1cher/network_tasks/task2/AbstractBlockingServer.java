@@ -10,24 +10,24 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public abstract class AbstractServer {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractServer.class);
+public abstract class AbstractBlockingServer implements Server {
+    private static final Logger log = LoggerFactory.getLogger(AbstractBlockingServer.class);
 
-    private final int port;
+    protected final int port;
 
-    public AbstractServer(int port) {
+    public AbstractBlockingServer(int port) {
         this.port = port;
     }
 
     public void listen(boolean singleRequest) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(port, 150)) {
-            logger.info("Started listening");
+            log.info("Started listening");
             while (true) {
                 Socket socket = serverSocket.accept();
                 try {
                     processSocket(socket);
                 } catch (IOException e) {
-                    logger.error("IOException with the client", e);
+                    log.error("IOException with the client", e);
                 }
                 if (singleRequest) break;
             }
@@ -43,7 +43,7 @@ public abstract class AbstractServer {
     protected void processRequest(Socket socket) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true)) {
-            logger.info("Got connection from {}", socket.getInetAddress().getHostAddress());
+            log.debug("Got connection from {}", socket.getInetAddress().getHostAddress());
             String name = reader.readLine();
             printWriter.println("Hello " + name + "!");
         }

@@ -1,16 +1,15 @@
 package org.a6raywa1cher.network_tasks.task2_3;
 
 import lombok.extern.slf4j.Slf4j;
-import org.a6raywa1cher.network_tasks.task2.AbstractServer;
+import org.a6raywa1cher.network_tasks.task2.AbstractBlockingServer;
+import org.a6raywa1cher.network_tasks.task2.Server;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ForkJoinPool;
 
 @Slf4j
-public class FJPServer extends AbstractServer {
-    public static final int PORT = 25565;
-
+public class FJPServer extends AbstractBlockingServer {
     private final ForkJoinPool forkJoinPool = new ForkJoinPool();
 
     public FJPServer(int port) {
@@ -18,7 +17,7 @@ public class FJPServer extends AbstractServer {
     }
 
     public static void main(String[] args) throws IOException {
-        FJPServer simpleServer = new FJPServer(PORT);
+        FJPServer simpleServer = new FJPServer(Server.DEFAULT_PORT);
         simpleServer.listen();
     }
 

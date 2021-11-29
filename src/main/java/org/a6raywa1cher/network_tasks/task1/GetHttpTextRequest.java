@@ -17,6 +17,7 @@ public class GetHttpTextRequest extends AbstractTextRequest<String> {
     public GetHttpTextRequest(String url) throws MalformedURLException {
         super(url);
         this.url = new URL(url);
+        this.port = 80;
     }
 
     @Override
