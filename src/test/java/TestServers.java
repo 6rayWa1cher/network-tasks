@@ -1,8 +1,7 @@
 import org.a6raywa1cher.network_tasks.task1.TextRequest;
-import org.a6raywa1cher.network_tasks.task2.AbstractBlockingServer;
 import org.a6raywa1cher.network_tasks.task2.Server;
-import org.a6raywa1cher.network_tasks.task2.SimpleClient;
 import org.a6raywa1cher.network_tasks.task2.SimpleBlockingServer;
+import org.a6raywa1cher.network_tasks.task2.SimpleClient;
 import org.a6raywa1cher.network_tasks.task2_2.MTServer;
 import org.a6raywa1cher.network_tasks.task2_3.FJPServer;
 import org.a6raywa1cher.network_tasks.task3.NIOServer;
@@ -39,8 +38,8 @@ public class TestServers {
             }
         });
         clientThread.start();
-        clientThread.join();
-        serverThread.join();
+        clientThread.join(5000);
+        serverThread.join(5000);
         Assertions.assertEquals("Hello cat!\n", actualAnswer[0]);
     }
 

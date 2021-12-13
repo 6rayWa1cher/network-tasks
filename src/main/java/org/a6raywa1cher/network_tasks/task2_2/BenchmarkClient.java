@@ -10,11 +10,11 @@ import java.util.concurrent.CountDownLatch;
 
 @Slf4j
 public class BenchmarkClient {
-    public static final int CONCURRENT_THREADS = 35;
+    public static final int CONCURRENT_THREADS = Runtime.getRuntime().availableProcessors();
 
-    public static final int REQUESTS_PER_THREAD = 10000;
+    public static final int REQUESTS_PER_THREAD = 15000;
 
-    public static final String HOSTNAME = null;
+    public static final String HOSTNAME = "192.168.0.114";
 
     public static final int PORT = 25565;
 

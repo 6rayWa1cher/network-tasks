@@ -15,7 +15,6 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.PropertyResourceBundle;
 import java.util.Set;
 
 public abstract class AbstractNIOServer implements Server {
@@ -23,7 +22,7 @@ public abstract class AbstractNIOServer implements Server {
 
     protected final int port;
     protected Selector selector;
-    private ByteBuffer buffer = ByteBuffer.allocate(1024);
+    private ByteBuffer buffer = ByteBuffer.allocate(256);
 
     public AbstractNIOServer(int port) {
         this.port = port;
